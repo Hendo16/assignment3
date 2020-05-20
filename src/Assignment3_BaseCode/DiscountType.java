@@ -11,5 +11,5 @@ package Assignment3_BaseCode;
  * @author Pairat Thorncharoensri
  */
 public enum DiscountType {
-    CardDiscount,Coupon;
+    CardDiscount,Coupon, None;
 }

@@ -52,7 +52,6 @@ public class PlatinumCard extends Card{
         return this.getDiscountPercentFirst()*amount;
     }
 
-   
     @Override
     public Coupon calYearlyCoupon() {
       String cid = super.getDiscountID()+"00"+count;   
