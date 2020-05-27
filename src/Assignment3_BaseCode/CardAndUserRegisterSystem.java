@@ -1,5 +1,6 @@
 package Assignment3_BaseCode;
 
+import java.awt.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -15,6 +16,12 @@ public class CardAndUserRegisterSystem {
 
     public CardAndUserRegisterSystem(MainSystem main){
         this.main = main;
+        view = new CardRegisterView();
+        cardReg = new CardRegisterPage(this);
+        query = new CardQueryPage(this);
+        display = new CardAndUserInformationDisplayPage(this);
+        flyerCards = new ArrayList();
+        coupons = new ArrayList();
     }
     public Address buildAddressFromArray(String[] content){
         String StreetNum = content[0];
@@ -34,12 +41,12 @@ public class CardAndUserRegisterSystem {
         if(cardtype.equals("Platinum")){
             PlatinumCard card = new PlatinumCard(ID, name, address, 0, date);
             flyerCards.add(card);
-            view.displayInformationToConsole("Registered card information:\nID: "+ID+"\nName: "+name+"\nDate of Activation: "+date.toString());
+            display.displayInformationToList(new String[]{"ID: "+card.getDiscountID(),"Name: ",card.getName(), "Date of Activation: "+card.getDate().toString()});
         }
         if(cardtype.equals("Titanium")){
             TitaniumCard card = new TitaniumCard(ID, name, address, 0, date);
             flyerCards.add(card);
-            view.displayInformationToConsole("Registered card information:\nID: "+ID+"\nName: "+name+"\nDate of Activation: "+date.toString());
+            display.displayInformationToList(new String[]{"ID: "+card.getDiscountID(),"Name: ",card.getName(), "Date of Activation: "+card.getDate().toString()});
         }
     }
     protected DiscountType getDiscountType(String discountID){
@@ -68,25 +75,45 @@ public class CardAndUserRegisterSystem {
         }
         return 0.0;
     }
-    protected Discount searchByDiscountID(String discountID){
-        for(Card card:flyerCards){
-            if(discountID.equals(card.getDiscountID())){
+    protected Discount searchByDiscountID(String discountID) {
+        for (Card card : flyerCards) {
+            if (discountID.equals(card.getDiscountID())) {
                 return card;
-            }
-        }
-        for(Coupon coup: coupons){
-            if(discountID.equals(coup.getDiscountID())){
-                return coup;
             }
         }
         return null;
     }
-    public void openCreateCardPage(){}
-    public void processDataFromCardPage(String[] content){}
-    protected void displayCardInformationToPage(String text){}
-    public void displayCardInformationToPage(){}
+    protected Discount searchByDiscountName(String discountName){
+        for(Card card:flyerCards){
+            if(discountName.equals(card.getName())){
+                return card;
+            }
+        }
+        return null;
+    }
+    public void openCreateCardPage(){
+        cardReg.setVisible(true);
+    }
+    public void searchForCardName(){
+        query.name=true;
+        query.openRequestForCard();
+        query.setVisible(true);
+    }
+    public void searchForCardID(){
+        query.name=false;
+        query.openRequestForCard();
+        query.setVisible(true);
+    }
     public void backToPreviousPage(){}
-    public void backToMainSystemPage(){}
-    public void searchCardByIDAndDisplayOnPage(String FlyerCard){}
-    public void searchCardByNameAndDisplayOnPage(String FlyerCard){}
+    public void backToMainSystemPage(){
+        main.backToMainMenu();
+    }
+    public void searchCardByIDAndDisplayOnPage(String FlyerCard) {
+        Card card = (Card) searchByDiscountID(FlyerCard);
+        display.displayInformationToList(new String[]{"ID: " + card.getDiscountID(), "Name: ", card.getName(), "Date of Activation: " + card.getDate().toString()});
+    }
+    public void searchCardByNameAndDisplayOnPage(String FlyerCard){
+        Card card = (Card) searchByDiscountName(FlyerCard);
+        display.displayInformationToList(new String[]{"ID: " + card.getDiscountID(), "Name: ", card.getName(), "Date of Activation: " + card.getDate().toString()});
+    }
 }
