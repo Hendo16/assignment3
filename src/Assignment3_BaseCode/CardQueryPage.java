@@ -2,31 +2,41 @@ package Assignment3_BaseCode;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 //Text Field and Event Handling
-public class CardQueryPage extends JFrame {
+public class CardQueryPage extends JPanel {
     private CardAndUserRegisterSystem cardRegister;
     private JTextField idField;
     private final JButton subbutt;
     private final JButton backbutt;
-    public Boolean name;
+    private Boolean name;
 
     public CardQueryPage(CardAndUserRegisterSystem system){
-        this.setTitle("Card Search");
         cardRegister = system;
-        name=false;
         subbutt = new JButton("Submit");
         backbutt = new JButton("Back");
         JLabel dialog = new JLabel();
         idField = new JTextField(20);
 
+        idField.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                idField.setText("");
+            }
+        });
+
         subbutt.addActionListener(e -> returnQueryInfoToSystem());
-        subbutt.addActionListener(e -> backToPreviousPage());
+        backbutt.addActionListener(e -> backToPreviousPage());
         setLayout(new FlowLayout());
         add(dialog);
         add(idField);
         add(subbutt);
         add(backbutt);
+    }
+    public void setName(Boolean name) {
+        this.name = name;
     }
     public void openRequestForCard(){
         if(name){idField.setText("Please enter card name");}
@@ -36,7 +46,7 @@ public class CardQueryPage extends JFrame {
         idField.setText("");
     }
     private void backToPreviousPage(){
-        cardRegister.backToPreviousPage();
+        cardRegister.backToMainSystemPage();
     }
     private void returnQueryInfoToSystem(){
         String cardID = idField.getText();

@@ -1,13 +1,12 @@
 package Assignment3_BaseCode;
 
-import java.awt.*;
+import javax.swing.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class CardAndUserRegisterSystem {
     private ArrayList<Card> flyerCards;
     private ArrayList<Coupon> coupons;
-    private CardRegisterView view;
     private MainSystem main;
 
     private CardRegisterPage cardReg;
@@ -16,20 +15,25 @@ public class CardAndUserRegisterSystem {
 
     public CardAndUserRegisterSystem(MainSystem main){
         this.main = main;
-        view = new CardRegisterView();
         cardReg = new CardRegisterPage(this);
         query = new CardQueryPage(this);
         display = new CardAndUserInformationDisplayPage(this);
         flyerCards = new ArrayList();
         coupons = new ArrayList();
     }
+    public void changePanel(JPanel panel, String title, int width, int height){
+        main.getFrame().setTitle(title);
+        main.getFrame().setSize(width, height);
+        main.getFrame().setContentPane(panel);
+        main.getFrame().revalidate();
+    }
     public Address buildAddressFromArray(String[] content){
         String StreetNum = content[0];
         String StreetName = content[1];
         String City = content[2];
         String State = content[3];
-        int Postcode = Integer.parseInt(content[4]);
-        String Suburb = content[5];
+        String Suburb = content[4];
+        int Postcode = Integer.parseInt(content[5]);
         return new Address(StreetNum, StreetName, Suburb, City, State, Postcode);
     }
     protected void registerCard(String[][] content){
@@ -92,28 +96,41 @@ public class CardAndUserRegisterSystem {
         return null;
     }
     public void openCreateCardPage(){
-        cardReg.setVisible(true);
+        changePanel(cardReg, "Create Card", 425, 200);
     }
     public void searchForCardName(){
-        query.name=true;
+        query.setName(true);
         query.openRequestForCard();
-        query.setVisible(true);
+        changePanel(query, "Card Search", 250, 100);
     }
     public void searchForCardID(){
-        query.name=false;
+        query.setName(false);
         query.openRequestForCard();
-        query.setVisible(true);
+        changePanel(query, "Card Search", 250, 100);
     }
-    public void backToPreviousPage(){}
     public void backToMainSystemPage(){
         main.backToMainMenu();
     }
     public void searchCardByIDAndDisplayOnPage(String FlyerCard) {
-        Card card = (Card) searchByDiscountID(FlyerCard);
-        display.displayInformationToList(new String[]{"ID: " + card.getDiscountID(), "Name: ", card.getName(), "Date of Activation: " + card.getDate().toString()});
+        try{
+            Card card = (Card) searchByDiscountID(FlyerCard);
+            display.displayInformationToList(new String[]{"ID: " + card.getDiscountID(), "Name: "+ card.getName(), "Date of Activation: " + card.getDate().toString()});
+            changePanel(display,"Card Information",250,150);
+        }
+        catch(NullPointerException e){
+            JOptionPane.showMessageDialog(main.getFrame(), "Error: Card not found. Please try again.");
+            return;
+        }
     }
     public void searchCardByNameAndDisplayOnPage(String FlyerCard){
-        Card card = (Card) searchByDiscountName(FlyerCard);
-        display.displayInformationToList(new String[]{"ID: " + card.getDiscountID(), "Name: ", card.getName(), "Date of Activation: " + card.getDate().toString()});
+        try{
+            Card card = (Card) searchByDiscountName(FlyerCard);
+            display.displayInformationToList(new String[]{"ID: " + card.getDiscountID(), "Name: "+ card.getName(), "Date of Activation: " + card.getDate().toString()});
+            changePanel(display,"Card Information",250,150);
+        }
+        catch(NullPointerException e){
+            JOptionPane.showMessageDialog(main.getFrame(), "Error: Card not found. Please try again.");
+            return;
+        }
     }
 }

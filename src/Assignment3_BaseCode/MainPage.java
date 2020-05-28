@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class MainPage extends JFrame {
+public class MainPage extends JPanel {
     private MainSystem main;
     private final JButton newbutt;
     private final JButton searchNamebutt;
@@ -23,9 +23,8 @@ public class MainPage extends JFrame {
 
         quitbutt.addActionListener(e -> System.exit(0));
         newbutt.addActionListener(e -> registerNewCard());
-        CardSorter handler = new CardSorter();
-        searchNamebutt.addActionListener(handler);
-        searchNamebutt.addActionListener(handler);
+        searchNamebutt.addActionListener(new CardSorter());
+        searchIDbutt.addActionListener(new CardSorter());
 
         setLayout(new FlowLayout());
         add(newbutt);
@@ -33,14 +32,14 @@ public class MainPage extends JFrame {
         add(searchIDbutt);
         add(quitbutt);
     }
-    public void mainMenu(){}
-    private void registerNewCard(){}
-    private void queryCard(){}
+    private void registerNewCard(){
+        main.createCardWithPage();
+    }
     private class CardSorter implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
-            String test = ((JButton) e.getSource()).getActionCommand();
-            System.out.println(test);
+            String name = ((JButton) e.getSource()).getName();
+            main.queryCardWithPage(name);
         }
     }
     private void buyTicket(){}

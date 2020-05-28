@@ -2,10 +2,8 @@ package Assignment3_BaseCode;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-public class CardAndUserInformationDisplayPage extends JFrame {
+public class CardAndUserInformationDisplayPage extends JPanel {
     private CardAndUserRegisterSystem cardRegister;
     private JTextArea textArea;
     private final JButton butt;
@@ -20,10 +18,8 @@ public class CardAndUserInformationDisplayPage extends JFrame {
         add(butt);
         butt.addActionListener(e -> backToPreviousPage());
     }
-    public void displayInformationToTextArea(String content){
-        textArea.setText(content);
-    }
     public void displayInformationToList(String[] content){
+        clear();
         for(String s: content){
             textArea.append(s+"\n");
         }
@@ -32,6 +28,6 @@ public class CardAndUserInformationDisplayPage extends JFrame {
         textArea.setText("");
     }
     private void backToPreviousPage(){
-        cardRegister.backToPreviousPage();
+        cardRegister.backToMainSystemPage();
     }
 }
