@@ -5,20 +5,17 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-//Text Field and Event Handling
-public class CardQueryPage extends JPanel {
-    private CardAndUserRegisterSystem cardRegister;
+public class TicketQueryPage extends JPanel{
+    private TicketPurchaseSystem ticketSystem;
     private JTextField idField;
     private final JButton subbutt;
     private final JButton backbutt;
     private final JButton clearbutt;
-    private Boolean name;
-
-    public CardQueryPage(CardAndUserRegisterSystem system){
-        cardRegister = system;
+    public TicketQueryPage(TicketPurchaseSystem system){
+        ticketSystem = system;
         subbutt = new JButton("Submit");
-        backbutt = new JButton("Back");
         clearbutt = new JButton("Clear");
+        backbutt = new JButton("Back");
         JLabel dialog = new JLabel();
         idField = new JTextField(20);
 
@@ -39,24 +36,17 @@ public class CardQueryPage extends JPanel {
         add(backbutt);
         add(clearbutt);
     }
-    public void setName(Boolean name) {
-        this.name = name;
-    }
-    public void openRequestForCard(){
-        if(name){idField.setText("Please enter card name");}
-        else{idField.setText("Please enter ID");}
+    public void openRequestForTicket(){
+        idField.setText("Please enter ticket ID");
     }
     private void clear(){
         idField.setText("");
     }
     private void backToPreviousPage(){
-        cardRegister.backToMainSystemPage();
+        ticketSystem.backToMainMenu();
     }
     private void returnQueryInfoToSystem(){
-        String cardID = idField.getText();
-        if(name){
-            cardRegister.searchCardByNameAndDisplayOnPage(cardID);
-        }
-        else{cardRegister.searchCardByIDAndDisplayOnPage(cardID);}
+        String ticketID = idField.getText();
+        ticketSystem.displayTicketInfo(ticketID);
     }
 }

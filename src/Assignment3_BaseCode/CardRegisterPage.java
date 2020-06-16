@@ -1,6 +1,8 @@
 package Assignment3_BaseCode;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 
 public class CardRegisterPage extends JPanel {
@@ -56,14 +58,17 @@ public class CardRegisterPage extends JPanel {
         add(backbutt);
         add(clearbutt);
 
+        subbutt.setEnabled(false);
+        CheckingFields listener = new CheckingFields();
+        IDField.getDocument().addDocumentListener(listener);
+        NameField.getDocument().addDocumentListener(listener);
+        AddressField.getDocument().addDocumentListener(listener);
+
         setSize(300, 600);
 
         subbutt.addActionListener(e -> returnCardRegisterInfoFromUserToSystem());
         backbutt.addActionListener(e -> backToPreviousPage());
         clearbutt.addActionListener(e -> clear());
-    }
-    public void openCardRegister(){
-
     }
     private void clear(){
         IDField.setText("");
@@ -73,20 +78,25 @@ public class CardRegisterPage extends JPanel {
     private void backToPreviousPage(){
         cardRegister.backToMainSystemPage();
     }
+    private void CheckIfFieldsAreEmpty(){
+        boolean value = false;
+        if(
+                IDField .getText().trim().length() != 0 &&
+                NameField.getText().trim().length() != 0 &&
+                AddressField.getText().split(",").length == 6
+        ){
+            value = true;
+        }
+        subbutt.setEnabled(value);
+    }
     private void returnCardRegisterInfoFromUserToSystem(){
         String[][] output = new String[2][3];
+        String [] addresslist = AddressField.getText().split(",");
         String cardtype = "";
         output[0][1] = NameField.getText();
         output[0][0] = IDField .getText();
-        output[1] = AddressField.getText().split(",");
-        if(output[0][1].length() == 0 || output[0][1].length() == 0 || output[1].length > 6){
-            JOptionPane.showMessageDialog(this, "Error: Information incorrrect, or empty. Please try again.");
-            return;
-        }
-        if(output[1].length < 6){
-            JOptionPane.showMessageDialog(this, "Error: Address too short. Please try again.");
-            return;
-        }
+        addresslist[5] = addresslist[5].trim();
+        output[1] = addresslist;
         if(platnium.isSelected()){
             cardtype = "Platinum";
         }
@@ -96,5 +106,22 @@ public class CardRegisterPage extends JPanel {
         output[0][2] = cardtype;
         cardRegister.registerCard(output);
         backToPreviousPage();
+    }
+    private class CheckingFields implements DocumentListener{
+
+        @Override
+        public void insertUpdate(DocumentEvent documentEvent) {
+            CheckIfFieldsAreEmpty();
+        }
+
+        @Override
+        public void removeUpdate(DocumentEvent documentEvent) {
+            CheckIfFieldsAreEmpty();
+        }
+
+        @Override
+        public void changedUpdate(DocumentEvent documentEvent) {
+            CheckIfFieldsAreEmpty();
+        }
     }
 }

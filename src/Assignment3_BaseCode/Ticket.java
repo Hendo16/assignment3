@@ -6,12 +6,13 @@
 package Assignment3_BaseCode;
 
 
+import java.io.Serializable;
 
 /**
  *
  * @author Pairat Thorncharoensri
  */
-public class Ticket {
+public class Ticket implements Serializable {
     private String ticketID;
     private String name;
     private String departureCity;
@@ -50,6 +51,26 @@ public class Ticket {
         return destinationCity;
     }
 
+    public String[] toStringArray(){
+        return new String[]{
+                "ID: "+
+                ticketID,
+                "Name: "+
+                name,
+                "Departure: "+
+                departureCity,
+                "Destination: "+
+                destinationCity,
+                "Flight Number: "+
+                flightNumber,
+                "Discount Type: "+
+                String.valueOf(discountType),
+                "Discount Amount"+
+                String.valueOf(discountAmount),
+                "Price: $"+
+                String.valueOf(price)
+        };
+    }
     @Override
     public String toString() {
         return "[" + "ticketID=" + ticketID + ", name=" + name + ", departureCity=" + departureCity + ", destinationCity=" + destinationCity + ", flightNumber=" + flightNumber + ", ticketType=" + ticketType + ", discountType=" + discountType + ", price=" + price + ", discountAmount=" + discountAmount + ']';

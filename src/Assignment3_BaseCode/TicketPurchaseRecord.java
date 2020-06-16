@@ -5,18 +5,19 @@
  */
 package Assignment3_BaseCode;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 /**
  *
  * @author Pairat Thorncharoensri
  */
-public class TicketRecord {
+public class TicketPurchaseRecord implements Serializable {
     String Ticketid;
     String discountId;
     LocalDate date;
 
-    public TicketRecord(String Ticketid, String discountId, LocalDate date) {
+    public TicketPurchaseRecord(String Ticketid, String discountId, LocalDate date) {
         this.Ticketid = Ticketid;
         this.discountId = discountId;
         this.date = date;

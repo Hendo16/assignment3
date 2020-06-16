@@ -22,6 +22,7 @@ public class CardAndUserRegisterSystem {
         coupons = new ArrayList();
     }
     public void changePanel(JPanel panel, String title, int width, int height){
+        //Method to change the multiple panels based on information passed through, to stop code repetition.
         main.getFrame().setTitle(title);
         main.getFrame().setSize(width, height);
         main.getFrame().setContentPane(panel);
@@ -101,12 +102,12 @@ public class CardAndUserRegisterSystem {
     public void searchForCardName(){
         query.setName(true);
         query.openRequestForCard();
-        changePanel(query, "Card Search", 250, 100);
+        changePanel(query, "Card Search", 270, 100);
     }
     public void searchForCardID(){
         query.setName(false);
         query.openRequestForCard();
-        changePanel(query, "Card Search", 250, 100);
+        changePanel(query, "Card Search", 270, 100);
     }
     public void backToMainSystemPage(){
         main.backToMainMenu();
